@@ -14,42 +14,6 @@ Install the optional dependency with:
 pip install requests
 ```
 
-### Fixing Windows launcher errors when installing `requests`
-
-If you see an error similar to:
-
-```
-Fatal error in launcher: Unable to create process using "C:\Users\<you>\AppData\Local\Programs\Python\Python313\python.exe" "...\pip.exe" install requests
-```
-
-the Python launcher is pointing to an interpreter that no longer exists. Use one of the following approaches to repair your
-environment:
-
-1. **Use the interpreter that is actually installed**
-
-   ```powershell
-   py -3 -m pip install requests
-   ```
-
-   or explicitly target your active Python executable:
-
-   ```powershell
-   "C:\Path\To\Your\Python\python.exe" -m pip install requests
-   ```
-
-2. **Repair the broken launcher entry**
-
-   - Reinstall or repair Python from https://www.python.org/downloads/ and check the box to add Python to `PATH`.
-   - After reinstalling, run `py -0p` to confirm the launcher sees the correct interpreter path.
-
-3. **Clean up stale `pip.exe` shims**
-
-   - Remove any outdated `pip.exe` files from `C:\Users\<you>\AppData\Local\Programs\Python\Python313\Scripts`.
-   - Open a new terminal so the refreshed PATH is picked up, then run `py -m ensurepip --upgrade` followed by `py -m pip install requests`.
-
-Once the launcher points to a valid interpreter, rerun `pip install requests` (or `python -m pip install requests`) and the
-installation should succeed.
-
 ## Basic Usage
 
 All functionality lives in `mini_gpt_code_v1.py`. Run `python mini_gpt_code_v1.py --help` to see every available argument. Below are the most common workflows.

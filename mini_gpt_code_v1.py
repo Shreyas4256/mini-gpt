@@ -505,13 +505,9 @@ def configure_optimizer(model: GPT, config: GPTConfig) -> torch.optim.Optimizer:
                 decay.add(fpn)
             elif pn.endswith("weight") and isinstance(m, blacklist_weight_modules):
                 no_decay.add(fpn)
+    decay = {pn for pn in decay if pn in model.state_dict()}
+    no_decay = {pn for pn in no_decay if pn in model.state_dict()}
     param_dict = {pn: p for pn, p in model.named_parameters()}
-    decay = {pn for pn in decay if pn in param_dict}
-    no_decay = {pn for pn in no_decay if pn in param_dict}
-    remaining = set(param_dict.keys()) - decay - no_decay
-    if remaining:
-        logging.debug("Parameters defaulting to no_decay: %s", sorted(remaining))
-        no_decay.update(remaining)
     optim_groups = [
         {"params": [param_dict[pn] for pn in sorted(list(decay))], "weight_decay": config.weight_decay},
         {"params": [param_dict[pn] for pn in sorted(list(no_decay))], "weight_decay": 0.0},
